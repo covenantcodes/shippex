@@ -8,6 +8,7 @@ const offset = 0.3 * inchToPixel;
 
 import UpperLogoPart from "../../svg/UpperLogoPart";
 import LowerLogoPart from "../../svg/LowerLogoPart";
+import COLORS from "../../configs/color";
 
 const SplashScreen = () => {
   const navigation = useNavigation();
@@ -50,17 +51,17 @@ const SplashScreen = () => {
         }),
         Animated.timing(logoScale, {
           toValue: 20,
-          duration: 1500,
+          duration: 1000,
           useNativeDriver: true,
         }),
         Animated.timing(blueWipeTranslateY, {
           toValue: 0,
-          duration: 600,
+          duration: 500,
           useNativeDriver: true,
         }),
       ]),
     ]).start(() => {
-      navigation.replace("Login");
+      navigation.navigate("Login");
     });
   }, [
     logoScale,
@@ -139,7 +140,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: width,
     height: height,
-    backgroundColor: "blue",
+    backgroundColor: COLORS.primaryColor,
     bottom: 0,
   },
 });
