@@ -1,30 +1,21 @@
 import React from "react";
-import {
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-  View,
-  Image,
-  StyleProp,
-  ViewStyle,
-  TextStyle,
-  ImageSourcePropType,
-} from "react-native";
+import { TouchableOpacity, Text, StyleSheet, View, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 interface CustomButtonProps {
-  width?: number | string;
+  width?: string | number;
   height?: number;
   title: string;
   color?: string;
-  icon?: keyof typeof Ionicons.glyphMap;
-  image?: ImageSourcePropType;
+  icon?: string;
+  image?: any;
   textColor?: string;
   borderColor?: string;
   onPress: () => void;
-  style?: StyleProp<ViewStyle>;
+  style?: any;
   fontSize?: number;
   fontFamily?: string;
+  disabled?: boolean; // Add disabled prop
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
@@ -40,29 +31,44 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   style,
   fontSize = 16,
   fontFamily = "PoppinsBold",
+  disabled = false, // Default to false
 }) => {
   return (
     <TouchableOpacity
       style={[
         styles.button,
         {
-          width: width as any, // Type assertion to avoid width type error
-          backgroundColor: color,
-          borderColor: borderColor,
-          borderWidth: borderColor ? 1 : 0,
+          width,
+          backgroundColor: disabled ? "#EAE7F2" : color, // Change background when disabled
+          borderColor:
+            borderColor || (disabled ? "transparent" : "transparent"),
+          borderWidth: borderColor || disabled ? 1 : 0,
           height: height || 50,
         },
         style,
       ]}
-      onPress={onPress}
+      onPress={!disabled ? onPress : undefined} // Disable onPress when button is disabled
+      activeOpacity={disabled ? 1 : 0.7} // Disable opacity effect when disabled
     >
       <View style={styles.content}>
         {icon && (
-          <Ionicons name={icon} size={24} color="white" style={styles.icon} />
+          <Ionicons
+            name={icon}
+            size={24}
+            color={disabled ? "#a9a9a9" : "white"}
+            style={styles.icon}
+          />
         )}
         {image && <Image source={image} style={styles.image} />}
         <Text
-          style={[styles.title, { color: textColor, fontSize, fontFamily }]}
+          style={[
+            styles.title,
+            {
+              color: disabled ? "#A7A3B3" : textColor || "#fff", // Change text color when disabled
+              fontSize,
+              fontFamily, // Set fontFamily dynamically
+            },
+          ]}
         >
           {title}
         </Text>
@@ -73,7 +79,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
 
 const styles = StyleSheet.create({
   button: {
-    borderRadius: 5,
+    borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
@@ -91,7 +97,9 @@ const styles = StyleSheet.create({
     height: 24,
     marginRight: 10,
   },
-  title: {},
+  title: {
+    fontSize: 16,
+  },
 });
 
 export default CustomButton;

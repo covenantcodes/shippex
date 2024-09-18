@@ -135,7 +135,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   logoContainer: {
-    borderWidth: 1,
     position: "absolute",
     alignItems: "center",
   },
