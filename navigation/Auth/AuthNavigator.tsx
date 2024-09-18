@@ -1,5 +1,5 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import Login from "../../screens/Auth/Login";
+import LoginHome from "../../screens/Auth/LoginHome";
 import SplashScreen from "../../screens/Splash/SplashScreen";
 
 const Stack = createStackNavigator();
@@ -13,8 +13,8 @@ function AuthNavigator() {
         options={{ headerShown: false }} // Hide the header for SplashScreen
       />
       <Stack.Screen
-        name="Login"
-        component={Login}
+        name="LoginHome"
+        component={LoginHome}
         options={{
           headerShown: false, // Hide the header for Login screen
           cardStyleInterpolator: ({ current }) => ({

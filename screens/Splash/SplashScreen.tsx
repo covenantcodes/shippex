@@ -1,17 +1,23 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../../navigation/navigationTypes";
 import { View, StyleSheet, Animated, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import UpperLogoPart from "../../svg/UpperLogoPart";
+import LowerLogoPart from "../../svg/LowerLogoPart";
+import COLORS from "../../configs/color";
 
 const { height, width } = Dimensions.get("window");
 const inchToPixel = 96;
 const offset = 0.3 * inchToPixel;
 
-import UpperLogoPart from "../../svg/UpperLogoPart";
-import LowerLogoPart from "../../svg/LowerLogoPart";
-import COLORS from "../../configs/color";
+type SplashScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "SplashScreen"
+>;
 
-const SplashScreen = () => {
-  const navigation = useNavigation();
+const SplashScreen: React.FC = () => {
+  const navigation = useNavigation<SplashScreenNavigationProp>();
 
   const logoScale = useRef(new Animated.Value(0)).current;
   const upperPartTranslateY = useRef(new Animated.Value(-offset)).current;
@@ -61,7 +67,7 @@ const SplashScreen = () => {
         }),
       ]),
     ]).start(() => {
-      navigation.navigate("Login");
+      navigation.navigate("LoginHome");
     });
   }, [
     logoScale,
