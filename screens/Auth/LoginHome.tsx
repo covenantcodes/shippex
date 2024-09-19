@@ -5,6 +5,7 @@ import CustomButton from "../../components/CustomButton";
 import CustomModal from "../../components/CustomModal";
 import CustomInput from "../../components/CustomInput";
 import { Ionicons } from "@expo/vector-icons";
+import images from "../../configs/images";
 
 const LoginHome: React.FC = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -51,7 +52,7 @@ const LoginHome: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Image source={require("../../assets/logo.png")} style={styles.logo} />
+      <Image source={images.logo} style={styles.logo} />
       <CustomButton
         width="100%"
         title="Login"
