@@ -1,8 +1,9 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useCallback } from "react";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../navigation/navigationTypes";
 import { View, StyleSheet, Animated, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import * as ExpoSplashScreen from "expo-splash-screen";
 import UpperLogoPart from "../../svg/UpperLogoPart";
 import LowerLogoPart from "../../svg/LowerLogoPart";
 import COLORS from "../../configs/color";
@@ -27,6 +28,16 @@ const SplashScreen: React.FC = () => {
   const blueWipeTranslateY = useRef(new Animated.Value(height)).current;
 
   useEffect(() => {
+    // Prevent the native splash screen from auto-hiding
+    ExpoSplashScreen.preventAutoHideAsync();
+  }, []);
+
+  const onAnimationComplete = useCallback(async () => {
+    await ExpoSplashScreen.hideAsync();
+    navigation.navigate("LoginHome");
+  }, [navigation]);
+
+  useEffect(() => {
     Animated.sequence([
       Animated.timing(logoScale, {
         toValue: 1,
@@ -46,12 +57,12 @@ const SplashScreen: React.FC = () => {
           useNativeDriver: true,
         }),
         Animated.timing(lowerPartTranslateY, {
-          toValue: -height * 1.0, // Changed to negative to move up
+          toValue: -height * 1.0,
           duration: 1200,
           useNativeDriver: true,
         }),
         Animated.timing(lowerPartTranslateX, {
-          toValue: -width * 0.5, // Move to the left edge of the screen
+          toValue: -width * 0.5,
           duration: 1200,
           useNativeDriver: true,
         }),
@@ -66,9 +77,7 @@ const SplashScreen: React.FC = () => {
           useNativeDriver: true,
         }),
       ]),
-    ]).start(() => {
-      navigation.navigate("LoginHome");
-    });
+    ]).start(onAnimationComplete);
   }, [
     logoScale,
     upperPartTranslateY,
@@ -76,7 +85,7 @@ const SplashScreen: React.FC = () => {
     lowerPartTranslateY,
     lowerPartTranslateX,
     blueWipeTranslateY,
-    navigation,
+    onAnimationComplete,
   ]);
 
   return (

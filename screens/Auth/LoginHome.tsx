@@ -6,8 +6,10 @@ import CustomModal from "../../components/CustomModal";
 import CustomInput from "../../components/CustomInput";
 import { Ionicons } from "@expo/vector-icons";
 import images from "../../configs/images";
+import { useNavigation } from "@react-navigation/native";
 
 const LoginHome: React.FC = () => {
+  const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [url, setUrl] = useState("");
   const [username, setUsername] = useState("");
@@ -44,6 +46,7 @@ const LoginHome: React.FC = () => {
   }, [url, username, password]);
 
   const handleLogin = () => {
+    navigation.navigate("Main");
     console.log("Login pressed with:", { url, username, password });
     // Implement your login logic here
     // After successful login, you might want to close the modal

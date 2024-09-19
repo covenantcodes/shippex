@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   focusedContainer: {
-    borderColor: COLORS.primaryColor, // Focused border color
+    borderColor: COLORS.primaryColor,
   },
   input: {
     flex: 1,
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   focusedInput: {
-    borderColor: COLORS.primaryColor, // Focused input border color
+    borderColor: COLORS.primaryColor,
   },
   urlInput: {
     paddingLeft: 5,
@@ -136,15 +136,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   urlText: {
+    fontFamily: "PoppinsRegular",
     color: COLORS.primaryPlaceHolderColor,
     fontSize: 16,
   },
   placeholderFocused: {
     position: "absolute",
-    top: 2, // Moves the placeholder just below the border, not on it
+    top: 2,
     left: 10,
     fontSize: 12,
-    backgroundColor: "#f7f7f7", // Keeps the background consistent with input background
+    backgroundColor: "#f7f7f7",
     paddingHorizontal: 5,
     color: COLORS.primaryPlaceHolderColor,
     marginBottom: 5,

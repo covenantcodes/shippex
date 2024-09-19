@@ -10,13 +10,13 @@ function AuthNavigator() {
       <Stack.Screen
         name="SplashScreen"
         component={SplashScreen}
-        options={{ headerShown: false }} // Hide the header for SplashScreen
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="LoginHome"
         component={LoginHome}
         options={{
-          headerShown: false, // Hide the header for Login screen
+          headerShown: false,
           cardStyleInterpolator: ({ current }) => ({
             cardStyle: {
               opacity: current.progress,
