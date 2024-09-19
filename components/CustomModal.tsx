@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Modal,
-  StyleSheet,
-  View,
-  Pressable,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { Modal, StyleSheet, View } from "react-native";
 import { PanGestureHandler, State } from "react-native-gesture-handler";
 
 interface CustomModalProps {
@@ -33,10 +27,9 @@ const CustomModal: React.FC<CustomModalProps> = ({
       visible={visible}
       onRequestClose={onClose}
     >
-      {/* Close the modal when clicking outside the modal content */}
-      <TouchableWithoutFeedback onPress={onClose}>
-        <View style={styles.overlay}>
-          {/* Inside modal content shouldn't close the modal */}
+      <View style={styles.overlay}>
+        <View style={styles.modalContentWrapper}>
+          {/* Handle the draggable line at the top */}
           <PanGestureHandler
             onGestureEvent={handleGesture}
             onHandlerStateChange={({ nativeEvent }) => {
@@ -48,14 +41,13 @@ const CustomModal: React.FC<CustomModalProps> = ({
               }
             }}
           >
-            <View style={styles.modalContent}>
-              {/* Handle the draggable line at the top */}
-              <View style={styles.dragLine} />
-              {children}
-            </View>
+            <View style={styles.dragLine} />
           </PanGestureHandler>
+
+          {/* Inside modal content */}
+          <View style={styles.modalContent}>{children}</View>
         </View>
-      </TouchableWithoutFeedback>
+      </View>
     </Modal>
   );
 };
@@ -66,12 +58,14 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
-  modalContent: {
+  modalContentWrapper: {
     backgroundColor: "#fff",
-    padding: 20,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     minHeight: 300,
+  },
+  modalContent: {
+    padding: 20,
   },
   dragLine: {
     width: 40,
@@ -79,7 +73,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ccc",
     borderRadius: 3,
     alignSelf: "center",
-    marginBottom: 10,
+    marginTop: 10,
   },
 });
 

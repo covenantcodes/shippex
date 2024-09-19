@@ -4,12 +4,16 @@ import COLORS from "../configs/color"; // Adjust the path for COLORS file
 
 interface CustomInputProps {
   type: "URL" | "Standard" | "Password";
+  value: string;
+  onChangeText: (text: string) => void;
   placeholder: string;
   style?: object;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
   type,
+  value,
+  onChangeText,
   placeholder,
   style,
 }) => {
@@ -31,16 +35,21 @@ const CustomInput: React.FC<CustomInputProps> = ({
     switch (type) {
       case "URL":
         return (
-          <View style={[styles.urlContainer, style]}>
-            <View style={styles.urlPrefix}>
-              <Text style={styles.urlText}>https:// |</Text>
-            </View>
+          <View style={[containerStyle, style]}>
+            {isFocused && (
+              <View style={styles.urlPrefix}>
+                <Text style={styles.urlText}>https:// |</Text>
+              </View>
+            )}
             <TextInput
-              style={[inputStyle, styles.urlInput]}
+              style={[inputStyle, isFocused ? styles.urlInput : null]}
               onFocus={handleFocus}
               onBlur={handleBlur}
               placeholder={isFocused ? "" : placeholder}
               placeholderTextColor={COLORS.grey}
+              autoCapitalize="none"
+              value={value}
+              onChangeText={onChangeText}
             />
             {isFocused && (
               <Text style={styles.placeholderFocused}>{placeholder}</Text>
@@ -56,8 +65,11 @@ const CustomInput: React.FC<CustomInputProps> = ({
               secureTextEntry={!showPassword}
               onFocus={handleFocus}
               onBlur={handleBlur}
-              placeholder={placeholder}
+              placeholder={isFocused ? "" : placeholder}
               placeholderTextColor={COLORS.grey}
+              autoCapitalize="none"
+              value={value}
+              onChangeText={onChangeText}
             />
             {isFocused && (
               <Text style={styles.placeholderFocused}>{placeholder}</Text>
@@ -80,6 +92,9 @@ const CustomInput: React.FC<CustomInputProps> = ({
               onBlur={handleBlur}
               placeholder={isFocused ? "" : placeholder}
               placeholderTextColor={COLORS.grey}
+              autoCapitalize="none"
+              value={value}
+              onChangeText={onChangeText}
             />
             {isFocused && (
               <Text style={styles.placeholderFocused}>{placeholder}</Text>
@@ -97,8 +112,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#f7f7f7",
-    borderColor: COLORS.grey, // Default border color
-    borderWidth: 1,
     borderRadius: 8,
     padding: 10,
     position: "relative",
@@ -109,23 +122,13 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     color: COLORS.primaryColor,
+    fontFamily: "PoppinsMedium",
     fontSize: 16,
   },
   focusedInput: {
     borderColor: COLORS.primaryColor, // Focused input border color
   },
-  urlContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#f7f7f7",
-    borderColor: COLORS.grey, // Default border color
-    borderWidth: 1,
-    borderRadius: 8,
-    padding: 10,
-    position: "relative",
-  },
   urlInput: {
-    flex: 1,
     paddingLeft: 5,
   },
   urlPrefix: {
