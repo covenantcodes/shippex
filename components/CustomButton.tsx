@@ -1,5 +1,11 @@
 import React from "react";
-import { TouchableOpacity, Text, StyleSheet, View, Image } from "react-native";
+import {
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  View,
+  ActivityIndicator,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 interface CustomButtonProps {
@@ -15,7 +21,8 @@ interface CustomButtonProps {
   style?: any;
   fontSize?: number;
   fontFamily?: string;
-  disabled?: boolean; // Add disabled prop
+  disabled?: boolean;
+  loading?: boolean; // Add loading prop
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
@@ -31,7 +38,8 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   style,
   fontSize = 16,
   fontFamily = "PoppinsBold",
-  disabled = false, // Default to false
+  disabled = false,
+  loading = false, // Default loading to false
 }) => {
   return (
     <TouchableOpacity
@@ -39,7 +47,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
         styles.button,
         {
           width,
-          backgroundColor: disabled ? "#EAE7F2" : color, // Change background when disabled
+          backgroundColor: disabled || loading ? "#EAE7F2" : color,
           borderColor:
             borderColor || (disabled ? "transparent" : "transparent"),
           borderWidth: borderColor || disabled ? 1 : 0,
@@ -47,31 +55,36 @@ const CustomButton: React.FC<CustomButtonProps> = ({
         },
         style,
       ]}
-      onPress={!disabled ? onPress : undefined} // Disable onPress when button is disabled
-      activeOpacity={disabled ? 1 : 0.7} // Disable opacity effect when disabled
+      onPress={!disabled && !loading ? onPress : undefined}
+      activeOpacity={disabled || loading ? 1 : 0.7} // Disable opacity when loading/disabled
     >
       <View style={styles.content}>
-        {icon && (
-          <Ionicons
-            name={icon}
-            size={24}
-            color={disabled ? "#a9a9a9" : "white"}
-            style={styles.icon}
-          />
+        {loading ? (
+          <ActivityIndicator size="small" color={textColor || "#fff"} /> // Show loading spinner
+        ) : (
+          <>
+            {icon && (
+              <Ionicons
+                name={icon}
+                size={24}
+                color={disabled ? "#a9a9a9" : "white"}
+                style={styles.icon}
+              />
+            )}
+            <Text
+              style={[
+                styles.title,
+                {
+                  color: disabled ? "#A7A3B3" : textColor || "#fff",
+                  fontSize,
+                  fontFamily,
+                },
+              ]}
+            >
+              {title}
+            </Text>
+          </>
         )}
-        {image && <Image source={image} style={styles.image} />}
-        <Text
-          style={[
-            styles.title,
-            {
-              color: disabled ? "#A7A3B3" : textColor || "#fff", // Change text color when disabled
-              fontSize,
-              fontFamily, // Set fontFamily dynamically
-            },
-          ]}
-        >
-          {title}
-        </Text>
       </View>
     </TouchableOpacity>
   );
@@ -90,11 +103,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   icon: {
-    marginRight: 10,
-  },
-  image: {
-    width: 24,
-    height: 24,
     marginRight: 10,
   },
   title: {

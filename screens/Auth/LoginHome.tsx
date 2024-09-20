@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Image, Text, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Image,
+  Text,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import COLORS from "../../configs/color";
 import CustomButton from "../../components/CustomButton";
 import CustomModal from "../../components/CustomModal";
@@ -7,6 +14,8 @@ import CustomInput from "../../components/CustomInput";
 import { Ionicons } from "@expo/vector-icons";
 import images from "../../configs/images";
 import { useNavigation } from "@react-navigation/native";
+import { login } from "../../services/apiServices";
+import axios from "axios";
 
 const LoginHome: React.FC = () => {
   const navigation = useNavigation();
@@ -16,27 +25,14 @@ const LoginHome: React.FC = () => {
   const [password, setPassword] = useState("");
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
-  // Validate the URL
-  const validateURL = (input: string) => {
-    return input.length > 0; // You can add more robust validation if needed
-  };
+  const validateURL = (input: string) => input.length > 0;
+  const validateUsername = (input: string) => input.length > 0;
+  const validatePassword = (input: string) => input.length >= 6;
 
-  // Validate the Username/Email
-  const validateUsername = (input: string) => {
-    return input.length > 0; // You can add more email-specific validation
-  };
-
-  // Validate the Password (at least 6 characters)
-  const validatePassword = (input: string) => {
-    return input.length >= 6;
-  };
-
-  // Toggle modal visibility
   const toggleModal = () => {
     setModalVisible(!modalVisible);
   };
 
-  // Use useEffect to check if the button should be enabled
   useEffect(() => {
     const isFormValid =
       validateURL(url) &&
@@ -45,12 +41,38 @@ const LoginHome: React.FC = () => {
     setIsButtonDisabled(!isFormValid);
   }, [url, username, password]);
 
-  const handleLogin = () => {
-    navigation.navigate("Main");
-    console.log("Login pressed with:", { url, username, password });
-    // Implement your login logic here
-    // After successful login, you might want to close the modal
-    toggleModal();
+  const handleLogin = async () => {
+    try {
+      const response = await login(username, password);
+
+      if (response && response.status === 200) {
+        console.log("Login successful:", response);
+        toggleModal(); // Close the modal
+        Alert.alert("Login Successful", "Logged In"); // Show success message
+        navigation.navigate("Main");
+      } else {
+        console.log("Login Failed", response.message || "Invalid credentials.");
+        Alert.alert("Login Failed", response.message || "Invalid credentials.");
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          Alert.alert("Login Failed", "Invalid username or password.");
+        } else {
+          Alert.alert(
+            "Login Error",
+            error.response?.data.message ||
+              "An error occurred. Please try again."
+          );
+        }
+      } else {
+        console.error("Login error:", error);
+        Alert.alert(
+          "Login Error",
+          "An unexpected error occurred. Please try again."
+        );
+      }
+    }
   };
 
   return (
@@ -66,7 +88,6 @@ const LoginHome: React.FC = () => {
         fontFamily="PoppinsSemiBold"
       />
 
-      {/* Custom Modal for Login Form */}
       <CustomModal visible={modalVisible} onClose={toggleModal}>
         <View style={styles.modalContentContainer}>
           <TouchableOpacity style={styles.modalHeader} onPress={toggleModal}>
