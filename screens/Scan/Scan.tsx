@@ -1,11 +1,12 @@
 import React from "react";
-import { View, Text, StyleSheet, SafeAreaView } from "react-native";
+import { View, Text, StyleSheet, SafeAreaView, Image } from "react-native";
 import COLORS from "../../configs/color";
 
 const Scan: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
+        <Image source={require("../../assets/images/shippex working.gif")} />
         <Text style={styles.title}>Coming Soon!</Text>
         <Text style={styles.details}>
           We are actively working on this screen. You will get notified once it

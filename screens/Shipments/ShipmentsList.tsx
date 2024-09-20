@@ -8,10 +8,10 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import COLORS from "../../configs/color";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ShipmentItem from "./ShipmentItem";
-import { fetchShipmentStatusList } from "../../services/apiServices"; // Import the API service
+import { fetchShipmentStatusList } from "../../services/apiServices";
 
 const ShipmentsList: React.FC = () => {
   const [shipments, setShipments] = useState([]);

@@ -1,15 +1,18 @@
 import { useState, useEffect } from "react";
 import { View, StyleSheet, Image, Text, TouchableOpacity } from "react-native";
+import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
+// CONFIGS IMPORT
 import COLORS from "../../configs/color";
+import images from "../../configs/images";
+// CUSTOM COMPONENTS IMPORT
 import CustomButton from "../../components/CustomButton";
 import CustomModal from "../../components/CustomModal";
 import CustomInput from "../../components/CustomInput";
+
 import { Ionicons } from "@expo/vector-icons";
-import images from "../../configs/images";
-import { useNavigation } from "@react-navigation/native";
 import { login } from "../../services/apiServices";
 import { useUserContext } from "../../Context/UserContext";
-import axios from "axios";
 
 const LoginHome: React.FC = () => {
   const navigation = useNavigation();
@@ -19,19 +22,15 @@ const LoginHome: React.FC = () => {
   const [password, setPassword] = useState("");
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
-
-  const { setUserData } = useUserContext();
-
   const [errorModalVisible, setErrorModalVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState({ text1: "", text2: "" });
 
+  const { setUserData } = useUserContext();
+
+  //FORM INPUT VALIDATION
   const validateURL = (input: string) => input.length > 0;
   const validateUsername = (input: string) => input.length > 0;
   const validatePassword = (input: string) => input.length >= 6;
-
-  const toggleModal = () => {
-    setModalVisible(!modalVisible);
-  };
 
   useEffect(() => {
     const isFormValid =
@@ -41,6 +40,12 @@ const LoginHome: React.FC = () => {
     setIsButtonDisabled(!isFormValid);
   }, [url, username, password]);
 
+  // MODAL TOGGLE
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
+
+  // HANDLE FORM LOGIN
   const handleLogin = async () => {
     setLoading(true);
     try {
@@ -160,11 +165,17 @@ const LoginHome: React.FC = () => {
 
       {/* Error Modal */}
       <CustomModal visible={errorModalVisible} onClose={handleCloseErrorModal}>
+        <View style={{ alignItems: "center", justifyContent: "center" }}>
+          <Image
+            source={require("../../assets/images/error.gif")}
+            style={{ width: 50, height: 50 }}
+          />
+        </View>
         <View style={styles.modalContentContainer}>
-          <Text style={styles.headerText}>{errorMessage.text1}</Text>
-          <Text style={styles.loginInfoText}>{errorMessage.text2}</Text>
+          <Text style={styles.errorHeaderText}>{errorMessage.text1}</Text>
+          <Text style={styles.errorBody}>{errorMessage.text2}</Text>
           <CustomButton
-            title="Okay"
+            title="Retry"
             color={COLORS.primaryColor}
             textColor="#fff"
             onPress={handleCloseErrorModal}
@@ -201,6 +212,15 @@ const styles = StyleSheet.create({
     color: COLORS.primaryColor,
     marginLeft: 3,
   },
+
+  errorHeaderText: {
+    fontFamily: "PoppinsSemiBold",
+    fontSize: 18,
+    color: COLORS.primaryColor,
+    marginLeft: 3,
+    textAlign: "center",
+  },
+
   loginInfo: {
     paddingVertical: 10,
   },
@@ -212,6 +232,13 @@ const styles = StyleSheet.create({
     fontFamily: "PoppinsLight",
     color: COLORS.grey,
     paddingVertical: 16,
+  },
+
+  errorBody: {
+    fontFamily: "PoppinsLight",
+    color: COLORS.grey,
+    paddingVertical: 16,
+    textAlign: "center",
   },
   modalContentContainer: {
     padding: 20,
