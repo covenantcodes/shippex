@@ -1,12 +1,5 @@
-import React, { useState, useEffect } from "react";
-import {
-  View,
-  StyleSheet,
-  Image,
-  Text,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import { useState, useEffect } from "react";
+import { View, StyleSheet, Image, Text, TouchableOpacity } from "react-native";
 import COLORS from "../../configs/color";
 import CustomButton from "../../components/CustomButton";
 import CustomModal from "../../components/CustomModal";
@@ -25,8 +18,12 @@ const LoginHome: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-  const [loading, setLoading] = useState(false); // Add loading state
+  const [loading, setLoading] = useState(false);
+
   const { setUserData } = useUserContext();
+
+  const [errorModalVisible, setErrorModalVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState({ text1: "", text2: "" });
 
   const validateURL = (input: string) => input.length > 0;
   const validateUsername = (input: string) => input.length > 0;
@@ -45,27 +42,27 @@ const LoginHome: React.FC = () => {
   }, [url, username, password]);
 
   const handleLogin = async () => {
-    setLoading(true); // Start loading
+    setLoading(true);
     try {
       const response = await login(username, password);
 
       if (response && response.status === 200) {
         console.log("Login successful:", response);
-        toggleModal(); // Close the modal
-        Alert.alert("Login Successful", "Logged In");
-        console.log(response.data);
+        toggleModal();
         setUserData(response.data);
         navigation.navigate("Main");
       } else {
-        console.log("Login Failed", response.message || "Invalid credentials.");
-        Alert.alert("Login Failed", response.message || "Invalid credentials.");
+        showErrorModal(
+          "Login Failed",
+          response.message || "Invalid credentials."
+        );
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response?.status === 401) {
-          Alert.alert("Login Failed", "Invalid username or password.");
+          showErrorModal("Login Failed", "Invalid username or password.");
         } else {
-          Alert.alert(
+          showErrorModal(
             "Login Error",
             error.response?.data.message ||
               "An error occurred. Please try again."
@@ -73,14 +70,23 @@ const LoginHome: React.FC = () => {
         }
       } else {
         console.error("Login error:", error);
-        Alert.alert(
+        showErrorModal(
           "Login Error",
           "An unexpected error occurred. Please try again."
         );
       }
     } finally {
-      setLoading(false); // Stop loading after login attempt
+      setLoading(false);
     }
+  };
+
+  const showErrorModal = (text1: string, text2: string) => {
+    setErrorMessage({ text1, text2 });
+    setErrorModalVisible(true);
+  };
+
+  const handleCloseErrorModal = () => {
+    setErrorModalVisible(false);
   };
 
   return (
@@ -145,10 +151,25 @@ const LoginHome: React.FC = () => {
               onPress={handleLogin}
               style={styles.loginButton}
               fontFamily="PoppinsSemiBold"
-              disabled={isButtonDisabled || loading} // Disable if form is invalid or loading
-              loading={loading} // Show loading animation
+              disabled={isButtonDisabled || loading}
+              loading={loading}
             />
           </View>
+        </View>
+      </CustomModal>
+
+      {/* Error Modal */}
+      <CustomModal visible={errorModalVisible} onClose={handleCloseErrorModal}>
+        <View style={styles.modalContentContainer}>
+          <Text style={styles.headerText}>{errorMessage.text1}</Text>
+          <Text style={styles.loginInfoText}>{errorMessage.text2}</Text>
+          <CustomButton
+            title="Okay"
+            color={COLORS.primaryColor}
+            textColor="#fff"
+            onPress={handleCloseErrorModal}
+            style={styles.loginButton}
+          />
         </View>
       </CustomModal>
     </View>
@@ -192,11 +213,9 @@ const styles = StyleSheet.create({
     color: COLORS.grey,
     paddingVertical: 16,
   },
-
   modalContentContainer: {
     padding: 20,
   },
-
   input: {
     backgroundColor: COLORS.background,
     padding: 15,
