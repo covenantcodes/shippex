@@ -13,6 +13,7 @@ const images = {
   ProfileIconActive: require("../assets/images/profileActive.png"),
   ProfileIconInactive: require("../assets/images/profileInactive.png"),
 
+  BoxIcon: require("../assets/images/box 1.png"),
   whatsappIcon: require("../assets/images/Whatsapp.png"),
 };
 

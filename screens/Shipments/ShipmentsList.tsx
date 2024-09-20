@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -6,13 +6,49 @@ import {
   SafeAreaView,
   FlatList,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import COLORS from "../../configs/color";
-import { shipments } from "../../configs/tempData";
 import ShipmentItem from "./ShipmentItem";
+import { fetchShipmentStatusList } from "../../services/apiServices"; // Import the API service
 
 const ShipmentsList: React.FC = () => {
+  const [shipments, setShipments] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetchShipmentStatusList();
+      setShipments(response.data.message); // Assuming the response has "message" with shipment data
+      setLoading(false);
+    } catch (err) {
+      setError("Failed to load shipments");
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color={COLORS.primaryColor} />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>{error}</Text>
+      </View>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -32,15 +68,15 @@ const ShipmentsList: React.FC = () => {
 
       <FlatList
         data={shipments}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.name}
         renderItem={({ item }) => (
           <ShipmentItem
-            awb={item.awb}
-            origin={item.origin}
-            destination={item.destination}
-            destinationDetails={item.destinationDetails}
-            originDetails={item.originDetails}
-            status={item.status}
+            awb={item.awb || "41785691423"}
+            origin={item.origin || "Cairo"}
+            destination={item.destination || "Alexandria"}
+            destinationDetails={item.destinationDetails || "Smoha, 22 max St."}
+            originDetails={item.originDetails || "Dokki, 22 Nile St."}
+            status={item.status || "Nil"}
             icon={item.icon}
           />
         )}
@@ -80,6 +116,20 @@ const styles = StyleSheet.create({
   listContent: {
     paddingHorizontal: 10,
     paddingVertical: 20,
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  errorText: {
+    fontSize: 16,
+    color: COLORS.error,
   },
 });
 

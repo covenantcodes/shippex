@@ -91,7 +91,7 @@ const ShipmentItem: React.FC<ShipmentItemProps> = ({
             size={20}
             color={"#D0D5DD"}
           />
-          <Image source={icon} style={styles.shipmentIcon} />
+          <Image source={images.BoxIcon} style={styles.shipmentIcon} />
         </View>
 
         <View style={styles.middleContainer}>

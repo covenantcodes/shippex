@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -15,8 +15,11 @@ import images from "../../configs/images";
 import Notification from "../../svg/Notification";
 import CustomModal from "../../components/CustomModal";
 import ShipmentsList from "./ShipmentsList";
+import { useUserContext } from "../../Context/UserContext";
 
 const Shipments: React.FC = () => {
+  const { userData } = useUserContext();
+  const fullName = userData?.full_name;
   const [searchText, setSearchText] = useState("");
   const [isFocused, setIsFocused] = useState(false);
 
@@ -66,7 +69,7 @@ const Shipments: React.FC = () => {
 
       <View style={styles.welcomeContainer}>
         <Text style={styles.welcomeTextGreetings}>Hello,</Text>
-        <Text style={styles.welcomeText}>Ibrahim Shaker</Text>
+        <Text style={styles.welcomeText}>{fullName}</Text>
       </View>
 
       {/* Search Input */}

@@ -39,7 +39,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   fontSize = 16,
   fontFamily = "PoppinsBold",
   disabled = false,
-  loading = false, // Default loading to false
+  loading = false,
 }) => {
   return (
     <TouchableOpacity
@@ -56,11 +56,10 @@ const CustomButton: React.FC<CustomButtonProps> = ({
         style,
       ]}
       onPress={!disabled && !loading ? onPress : undefined}
-      activeOpacity={disabled || loading ? 1 : 0.7} // Disable opacity when loading/disabled
     >
       <View style={styles.content}>
         {loading ? (
-          <ActivityIndicator size="small" color={textColor || "#fff"} /> // Show loading spinner
+          <ActivityIndicator size="large" color={textColor || "#fff"} /> // Show loading spinner
         ) : (
           <>
             {icon && (

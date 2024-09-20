@@ -15,6 +15,7 @@ import { Ionicons } from "@expo/vector-icons";
 import images from "../../configs/images";
 import { useNavigation } from "@react-navigation/native";
 import { login } from "../../services/apiServices";
+import { useUserContext } from "../../Context/UserContext";
 import axios from "axios";
 
 const LoginHome: React.FC = () => {
@@ -24,6 +25,8 @@ const LoginHome: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [loading, setLoading] = useState(false); // Add loading state
+  const { setUserData } = useUserContext();
 
   const validateURL = (input: string) => input.length > 0;
   const validateUsername = (input: string) => input.length > 0;
@@ -42,13 +45,16 @@ const LoginHome: React.FC = () => {
   }, [url, username, password]);
 
   const handleLogin = async () => {
+    setLoading(true); // Start loading
     try {
       const response = await login(username, password);
 
       if (response && response.status === 200) {
         console.log("Login successful:", response);
         toggleModal(); // Close the modal
-        Alert.alert("Login Successful", "Logged In"); // Show success message
+        Alert.alert("Login Successful", "Logged In");
+        console.log(response.data);
+        setUserData(response.data);
         navigation.navigate("Main");
       } else {
         console.log("Login Failed", response.message || "Invalid credentials.");
@@ -72,6 +78,8 @@ const LoginHome: React.FC = () => {
           "An unexpected error occurred. Please try again."
         );
       }
+    } finally {
+      setLoading(false); // Stop loading after login attempt
     }
   };
 
@@ -137,7 +145,8 @@ const LoginHome: React.FC = () => {
               onPress={handleLogin}
               style={styles.loginButton}
               fontFamily="PoppinsSemiBold"
-              disabled={isButtonDisabled}
+              disabled={isButtonDisabled || loading} // Disable if form is invalid or loading
+              loading={loading} // Show loading animation
             />
           </View>
         </View>

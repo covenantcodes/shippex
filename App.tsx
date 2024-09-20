@@ -1,6 +1,7 @@
 import { useFonts } from "expo-font";
 import { createStackNavigator } from "@react-navigation/stack";
 import MainNavigator from "./navigation/MainNavigator";
+import { UserProvider } from "./Context/UserContext";
 
 const Stack = createStackNavigator();
 
@@ -23,7 +24,11 @@ const App = () => {
     return null;
   }
 
-  return <MainNavigator />;
+  return (
+    <UserProvider>
+      <MainNavigator />
+    </UserProvider>
+  );
 };
 
 export default App;
