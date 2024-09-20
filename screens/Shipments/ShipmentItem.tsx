@@ -125,7 +125,15 @@ const ShipmentItem: React.FC<ShipmentItemProps> = ({
       </View>
 
       <Animated.View
-        style={[styles.expandedContent, { height: heightInterpolation }]}
+        style={[
+          styles.expandedContent,
+          {
+            height: heightInterpolation,
+            borderTopWidth: expanded ? 3 : 0,
+            borderStyle: "dashed",
+            borderColor: expanded ? "white" : "transparent",
+          },
+        ]}
       >
         <View style={styles.detailsContainer}>
           <View style={styles.detailColumn}>
@@ -154,10 +162,9 @@ const ShipmentItem: React.FC<ShipmentItemProps> = ({
             <Text style={styles.actionButtonText}>Call</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.whatsappButton}>
-            {/* <Ionicons name="logo-whatsapp" size={20} color={COLORS.white} /> */}
             <Image
               source={images.whatsappIcon}
-              style={{ width: 25, height: 25 }}
+              style={{ width: 23, height: 23 }}
             />
             <Text style={styles.actionButtonText}>WhatsApp</Text>
           </TouchableOpacity>
@@ -224,6 +231,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 10,
     borderRadius: 7,
+    marginRight: 5,
   },
   statusText: {
     fontSize: 12,
@@ -232,7 +240,7 @@ const styles = StyleSheet.create({
   expandButton: {
     padding: 6,
     borderRadius: 25,
-    marginLeft: 5,
+    marginLeft: 10,
     backgroundColor: COLORS.white,
   },
   expandedContent: {
@@ -253,7 +261,7 @@ const styles = StyleSheet.create({
   },
   detailLocation: {
     fontSize: 16,
-    fontFamily: "PoppinsRegular",
+    fontFamily: "PoppinsMedium",
     color: COLORS.black,
   },
   detailAddress: {

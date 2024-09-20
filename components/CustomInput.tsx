@@ -144,6 +144,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 2,
     left: 10,
+    fontFamily: "PoppinsRegular",
     fontSize: 12,
     backgroundColor: COLORS.background,
     paddingHorizontal: 5,

@@ -7,6 +7,7 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons"; // Import Ionicons for the icons
 import COLORS from "../../configs/color";
@@ -102,13 +103,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.white,
+    paddingTop: Platform.OS == "android" ? 45 : 0,
   },
   header: {
+    padding: 12,
     flexDirection: "row",
-    padding: 5,
+    justifyContent: "space-between",
   },
   profileContainer: {
-    width: "20%",
     alignItems: "center",
   },
   profileImageContainer: {
@@ -118,7 +120,7 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     padding: 5,
-    width: "60%",
+    // width: "60%",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -129,7 +131,7 @@ const styles = StyleSheet.create({
   notificationContainer: {
     alignItems: "center",
     justifyContent: "center",
-    width: "20%",
+    // width: "20%",
   },
   notificationBox: {
     backgroundColor: COLORS.background,
@@ -140,11 +142,11 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   welcomeTextGreetings: {
-    fontSize: 14,
+    fontSize: 16,
     fontFamily: "PoppinsLight",
   },
   welcomeText: {
-    fontSize: 22,
+    fontSize: 27,
     fontFamily: "PoppinsSemiBold",
   },
   searchContainer: {
@@ -175,7 +177,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#f7f7f7",
-    width: "45%",
+    width: "48%",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
@@ -186,7 +188,7 @@ const styles = StyleSheet.create({
     fontFamily: "PoppinsLight",
   },
   addButton: {
-    width: "45%",
+    width: "48%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
