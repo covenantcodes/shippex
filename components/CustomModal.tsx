@@ -64,9 +64,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     minHeight: 300,
   },
-  modalContent: {
-    padding: 20,
-  },
+  modalContent: {},
   dragLine: {
     width: 40,
     height: 5,

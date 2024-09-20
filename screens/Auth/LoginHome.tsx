@@ -68,51 +68,57 @@ const LoginHome: React.FC = () => {
 
       {/* Custom Modal for Login Form */}
       <CustomModal visible={modalVisible} onClose={toggleModal}>
-        <TouchableOpacity style={styles.modalHeader} onPress={toggleModal}>
-          <Ionicons name="chevron-back" color={COLORS.primaryColor} size={24} />
-          <Text style={styles.headerText}>Cancel</Text>
-        </TouchableOpacity>
+        <View style={styles.modalContentContainer}>
+          <TouchableOpacity style={styles.modalHeader} onPress={toggleModal}>
+            <Ionicons
+              name="chevron-back"
+              color={COLORS.primaryColor}
+              size={24}
+            />
+            <Text style={styles.headerText}>Cancel</Text>
+          </TouchableOpacity>
 
-        <View style={styles.loginInfo}>
-          <Text style={styles.loginInfoHeader}>Login</Text>
-          <Text style={styles.loginInfoText}>
-            Please enter your URL, Username/Email, and Password to log in.
-          </Text>
-        </View>
+          <View style={styles.loginInfo}>
+            <Text style={styles.loginInfoHeader}>Login</Text>
+            <Text style={styles.loginInfoText}>
+              Please enter your URL, Username/Email, and Password to log in.
+            </Text>
+          </View>
 
-        <CustomInput
-          type="URL"
-          placeholder="URL"
-          style={styles.input}
-          value={url}
-          onChangeText={setUrl}
-        />
-        <CustomInput
-          type="Standard"
-          placeholder="Username/Email"
-          style={styles.input}
-          value={username}
-          onChangeText={setUsername}
-        />
-        <CustomInput
-          type="Password"
-          placeholder="Password"
-          style={styles.input}
-          value={password}
-          onChangeText={setPassword}
-        />
-
-        <View style={styles.buttonContainer}>
-          <CustomButton
-            width="100%"
-            title="Login"
-            color={COLORS.primaryColor}
-            textColor="#fff"
-            onPress={handleLogin}
-            style={styles.loginButton}
-            fontFamily="PoppinsSemiBold"
-            disabled={isButtonDisabled}
+          <CustomInput
+            type="URL"
+            placeholder="URL"
+            style={styles.input}
+            value={url}
+            onChangeText={setUrl}
           />
+          <CustomInput
+            type="Standard"
+            placeholder="Username/Email"
+            style={styles.input}
+            value={username}
+            onChangeText={setUsername}
+          />
+          <CustomInput
+            type="Password"
+            placeholder="Password"
+            style={styles.input}
+            value={password}
+            onChangeText={setPassword}
+          />
+
+          <View style={styles.buttonContainer}>
+            <CustomButton
+              width="100%"
+              title="Login"
+              color={COLORS.primaryColor}
+              textColor="#fff"
+              onPress={handleLogin}
+              style={styles.loginButton}
+              fontFamily="PoppinsSemiBold"
+              disabled={isButtonDisabled}
+            />
+          </View>
         </View>
       </CustomModal>
     </View>
@@ -156,6 +162,11 @@ const styles = StyleSheet.create({
     color: COLORS.grey,
     paddingVertical: 16,
   },
+
+  modalContentContainer: {
+    padding: 20,
+  },
+
   input: {
     backgroundColor: COLORS.background,
     padding: 15,

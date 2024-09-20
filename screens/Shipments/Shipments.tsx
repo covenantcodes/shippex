@@ -13,6 +13,7 @@ import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons"; // Import
 import COLORS from "../../configs/color";
 import images from "../../configs/images";
 import Notification from "../../svg/Notification";
+import CustomModal from "../../components/CustomModal";
 import ShipmentsList from "./ShipmentsList";
 
 const Shipments: React.FC = () => {
@@ -21,6 +22,28 @@ const Shipments: React.FC = () => {
 
   const handleClear = () => {
     setSearchText("");
+  };
+
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleOpenModal = () => {
+    setModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalVisible(false);
+  };
+
+  // State to track selected statuses
+  const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
+
+  // Toggle status selection
+  const toggleStatus = (status: string) => {
+    setSelectedStatuses((prev) =>
+      prev.includes(status)
+        ? prev.filter((item) => item !== status)
+        : [...prev, status]
+    );
   };
 
   return (
@@ -79,7 +102,7 @@ const Shipments: React.FC = () => {
 
       {/* Buttons below search input */}
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.filterButton}>
+        <TouchableOpacity style={styles.filterButton} onPress={handleOpenModal}>
           <Ionicons name="filter" size={20} color={COLORS.grey} />
           <Text style={styles.filterButtonText}>Filters</Text>
         </TouchableOpacity>
@@ -93,6 +116,56 @@ const Shipments: React.FC = () => {
           <Text style={styles.addButtonText}>Add Scan</Text>
         </TouchableOpacity>
       </View>
+
+      {/* FILTER MODAL */}
+      <CustomModal visible={modalVisible} onClose={handleCloseModal}>
+        {/* Filter options */}
+        <View style={styles.filterHeader}>
+          <TouchableOpacity onPress={handleCloseModal}>
+            <Text style={styles.modalActionText}>Cancel</Text>
+          </TouchableOpacity>
+
+          <Text style={styles.modalActionHeaderText}>Filter</Text>
+
+          <TouchableOpacity>
+            <Text style={styles.modalActionText}>Done</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.modalContentContainer}>
+          <Text style={styles.modalTitle}>SHIPMENT STATUS</Text>
+
+          <View style={styles.statusContainer}>
+            {[
+              "Received",
+              "Putaway",
+              "Delivered",
+              "Canceled",
+              "Rejected",
+              "Lost",
+              "On Hold",
+            ].map((status, index) => (
+              <TouchableOpacity
+                key={index}
+                style={[
+                  styles.statusButton,
+                  selectedStatuses.includes(status) && styles.selectedButton,
+                ]}
+                onPress={() => toggleStatus(status)}
+              >
+                <Text
+                  style={[
+                    styles.statusText,
+                    selectedStatuses.includes(status) && styles.selectedText,
+                  ]}
+                >
+                  {status}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+      </CustomModal>
 
       <ShipmentsList />
     </SafeAreaView>
@@ -120,7 +193,6 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     padding: 5,
-    // width: "60%",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -131,7 +203,6 @@ const styles = StyleSheet.create({
   notificationContainer: {
     alignItems: "center",
     justifyContent: "center",
-    // width: "20%",
   },
   notificationBox: {
     backgroundColor: COLORS.background,
@@ -201,6 +272,67 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     color: COLORS.white,
     fontFamily: "PoppinsLight",
+  },
+
+  modalTitle: {
+    fontSize: 16,
+    fontFamily: "PoppinsMedium",
+    color: COLORS.black,
+    marginBottom: 10,
+  },
+  statusContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center",
+  },
+  statusButton: {
+    margin: 2,
+    backgroundColor: COLORS.background,
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    marginVertical: 5,
+    borderColor: COLORS.white,
+    borderWidth: 1,
+  },
+  statusText: {
+    color: COLORS.primaryPlaceHolderColor,
+    fontSize: 14,
+    fontFamily: "PoppinsMedium",
+  },
+
+  selectedButton: {
+    borderWidth: 2,
+    borderColor: COLORS.secondaryPlaceHolderColor,
+    backgroundColor: COLORS.background,
+  },
+  selectedText: {
+    color: COLORS.secondaryPlaceHolderColor,
+  },
+
+  filterHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+    borderBottomWidth: 2,
+    borderColor: COLORS.background,
+  },
+
+  modalActionText: {
+    color: COLORS.primaryColor,
+    fontSize: 18,
+    fontFamily: "PoppinsMedium",
+  },
+
+  modalActionHeaderText: {
+    color: COLORS.black,
+    fontSize: 18,
+    fontFamily: "PoppinsSemiBold",
+  },
+
+  modalContentContainer: {
+    paddingHorizontal: 20,
   },
 });
 
