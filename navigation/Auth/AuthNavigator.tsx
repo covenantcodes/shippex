@@ -6,12 +6,7 @@ const Stack = createStackNavigator();
 
 function AuthNavigator() {
   return (
-    <Stack.Navigator initialRouteName="SplashScreen">
-      <Stack.Screen
-        name="SplashScreen"
-        component={SplashScreen}
-        options={{ headerShown: false }}
-      />
+    <Stack.Navigator>
       <Stack.Screen
         name="LoginHome"
         component={LoginHome}

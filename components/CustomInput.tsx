@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#f7f7f7",
+    backgroundColor: COLORS.background,
     borderRadius: 8,
     padding: 10,
     position: "relative",
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     top: 2,
     left: 10,
     fontSize: 12,
-    backgroundColor: "#f7f7f7",
+    backgroundColor: COLORS.background,
     paddingHorizontal: 5,
     color: COLORS.primaryPlaceHolderColor,
     marginBottom: 5,

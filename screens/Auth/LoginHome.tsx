@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
   },
   input: {
-    backgroundColor: "#f7f7f7",
+    backgroundColor: COLORS.background,
     padding: 15,
     borderRadius: 8,
     marginBottom: 15,

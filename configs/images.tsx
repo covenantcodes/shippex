@@ -1,5 +1,7 @@
 const images = {
   logo: require("../assets/images/logo.png"),
+  logoBlue: require("../assets/images/logoBlue.png"),
+  profile: require("../assets/images/profileImage.jpg"),
 
   // TAB ICONS
   shipmentsIconActive: require("../assets/images/shipmentsActive.png"),
@@ -10,6 +12,8 @@ const images = {
   walletIconInactive: require("../assets/images/walletInactive.png"),
   ProfileIconActive: require("../assets/images/profileActive.png"),
   ProfileIconInactive: require("../assets/images/profileInactive.png"),
+
+  whatsappIcon: require("../assets/images/Whatsapp.png"),
 };
 
 export default images;

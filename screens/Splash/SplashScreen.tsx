@@ -34,7 +34,7 @@ const SplashScreen: React.FC = () => {
 
   const onAnimationComplete = useCallback(async () => {
     await ExpoSplashScreen.hideAsync();
-    navigation.navigate("LoginHome");
+    navigation.replace("Auth");
   }, [navigation]);
 
   useEffect(() => {
